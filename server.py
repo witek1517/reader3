@@ -1,11 +1,10 @@
 ﻿import os
 import json
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify
 
-app = Flask(__name__, template_folder='templates', static_folder='static')
+app = Flask(__name__)
 
 def get_books():
-    """Szuka przetworzonych książek w reader3_data"""
     books = []
     data_dir = 'reader3_data'
     
@@ -13,7 +12,6 @@ def get_books():
         for folder in os.listdir(data_dir):
             folder_path = os.path.join(data_dir, folder)
             if os.path.isdir(folder_path):
-                # Sprawdź czy istnieje plik book.pkl
                 pkl_file = os.path.join(folder_path, 'book.pkl')
                 if os.path.exists(pkl_file):
                     books.append({
@@ -26,9 +24,10 @@ def get_books():
 def index():
     books = get_books()
     if books:
-        return f'<h1>Reader3</h1><ul>{"".join([f"<li>{b[\"name\"]}</li>" for b in books])}</ul>'
+        book_list = '<br>'.join([b['name'] for b in books])
+        return f'<h1>Reader3</h1><p>{book_list}</p>'
     else:
-        return '<h1>Reader3 is running!</h1><p>No books found. Process an EPUB first.</p>'
+        return '<h1>Reader3 is running!</h1><p>No books found.</p>'
 
 @app.route('/api/books')
 def api_books():
