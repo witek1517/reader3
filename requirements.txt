@@ -1,5 +1,2 @@
 ﻿flask==2.3.2
 werkzeug==2.3.6
-epub==0.5.1
-gunicorn==21.2.0
-unicorn==1.1.0
